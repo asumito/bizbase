@@ -1,11 +1,11 @@
 [build]
 
-Tell Netlify where the function files are located
+# Tell Netlify where the function files are located
 
 functions = "netlify-functions"
 
 [functions]
 
-Set the node version for the functions environment
+# Set the node version for the functions environment
 
 node_bundler = "esbuild"
