@@ -1,21 +1,68 @@
-// netlify-functions/getAssets.js
 const fs = require('fs');
 const path = require('path');
 
-// Determine the path to the static assets directory relative to the function's execution path.
-// When deployed on Netlify, the static files are generally accessible via a relative path 
-// based on the build environment, but reading them directly can be tricky.
-// The most reliable way is often to use a known path relative to the function's executable.
-// NOTE: For local Netlify CLI testing, you may need to adjust the __dirname logic.
-const ASSETS_PATH = path.join(process.cwd(), 'assets'); 
+// Define the directory containing the assets, relative to the function's root
+const ASSETS_DIR = path.join(process.cwd(), 'assets');
 
-/**
- * Helper to determine file type from extension.
- * @param {string} filename 
- * @returns {string} The capitalized file extension.
- */
-function getFileType(filename) {
-    const ext = path.extname(filename).toUpperCase().replace('.', '');
-    return ext || 'FILE';
-}
+// Helper function to capitalize the first letter
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
+// This is the main handler for the Netlify function
+exports.handler = async function(event, context) {
+    try {
+        // Read all file names from the 'assets' directory
+        const files = await fs.promises.readdir(ASSETS_DIR);
+        
+        // Process the file list into a structured JSON format for the front-end
+        const assetList = files.map(filename => {
+            const parts = filename.split('.');
+            const extension = parts.pop();
+            const name = parts.join('.').replace(/-/g, ' '); // Clean up name for display
+            
+            // Determine a simple type for display
+            let type = 'File';
+            let description = 'General Educational Material';
+            
+            if (extension === 'pdf') {
+                type = 'PDF';
+                description = 'Detailed lecture notes or reading material.';
+            } else if (['docx', 'doc'].includes(extension)) {
+                type = 'DOCX';
+                description = 'Editable document template or assignment.';
+            } else if (['pptx', 'ppt'].includes(extension)) {
+                type = 'PPT';
+                description = 'Presentation slides for review.';
+            } else if (['xlsx', 'csv'].includes(extension)) {
+                type = 'Data';
+                description = 'Spreadsheet or data sample.';
+            }
+            
+            return {
+                filename: filename,
+                name: capitalize(name),
+                type: type,
+                // These values are mocked since the function cannot easily get real file size/description
+                size: 'Approx. 5 MB', 
+                description: description
+            };
+        });
+
+        return {
+            statusCode: 200,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(assetList),
+        };
+    } catch (error) {
+        console.error("Error reading assets directory:", error);
+        
+        // This catch block handles the error if the 'assets' folder is completely missing
+        return {
+            statusCode: 500,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                error: "Failed to read assets.", 
+                detail: error.message 
+            }),
+        };
+    }
+};
