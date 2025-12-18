@@ -1,57 +1,81 @@
-// script.js - automatically list all PDFs in /assets folder
+// script.js
 const pdfList = document.getElementById('pdf-list');
 const searchInput = document.getElementById('search');
 
-// List of PDFs - Netlify lets us use a simple JSON file generated at build time
-// We'll fetch a tiny manifest.json that contains the file list
 async function loadpdfs() {
   try {
     const response = await fetch('/assets/manifest.json');
     if (!response.ok) throw new Error('manifest not found');
     const files = await response.json();
 
-    // Sort alphabetically
-    files.sort((a, b) => a.localeCompare(b));
+    const groups = {};
+    files.forEach(file => {
+      const filename = file.split('/').pop();
+      const subjectPart = filename.split('_')[0];
+      const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1); // e.g. AGRI → Agri
 
-    renderpdfs(files);
-    
-    // Setup live search
+      if (!groups[subject]) groups[subject] = [];
+      groups[subject].push(file);
+    });
+
+    const sortedSubjects = Object.keys(groups).sort((a, b) => a.localeCompare(b));
+    rendergroups(sortedSubjects, groups);
+
     searchInput.addEventListener('input', () => {
       const term = searchInput.value.toLowerCase();
-      const filtered = files.filter(file => file.toLowerCase().includes(term));
-      renderpdfs(filtered);
+      const filteredGroups = {};
+
+      files.forEach(file => {
+        if (file.toLowerCase().includes(term)) {
+          const filename = file.split('/').pop();
+          const subjectPart = filename.split('_')[0];
+          const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1);
+
+          if (!filteredGroups[subject]) filteredGroups[subject] = [];
+          filteredGroups[subject].push(file);
+        }
+      });
+
+      const sorted = Object.keys(filteredGroups).sort((a, b) => a.localeCompare(b));
+      rendergroups(sorted, filteredGroups);
     });
 
   } catch (err) {
-    pdfList.innerHTML = '<li class="no-results">Error loading PDFs. Check console.</li>';
+    pdfList.innerHTML = '<li class="no-results">Error loading PDFs.</li>';
     console.error(err);
   }
 }
 
-function renderpdfs(files) {
-  if (files.length === 0) {
+function rendergroups(subjects, groups) {
+  if (subjects.length === 0) {
     pdfList.innerHTML = '<li class="no-results">No PDFs found matching your search.</li>';
     return;
   }
 
-  pdfList.innerHTML = files
-    .map(filename => {
+  pdfList.innerHTML = subjects.map(subject => {
+    const items = groups[subject].map(file => {
+      const filename = file.split('/').pop();
       const cleanName = filename
         .replace(/.pdf$/i, '')
-        .replace(/-/g, ' ')
         .replace(/_/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase()); // Simple title case
+        .replace(/\b\w/g, l => l.toUpperCase());
 
       return `
         <li>
-          <a href="/assets/${filename}" target="_blank" rel="noopener">
+          <a href="/assets/${file}" target="_blank" rel="noopener">
             📄 ${cleanName}
           </a>
         </li>
       `;
-    })
-    .join('');
+    }).join('');
+
+    return `
+      <li class="subject-group">
+        <h3>${subject}</h3>
+        <ul>${items}</ul>
+      </li>
+    `;
+  }).join('');
 }
 
-// Start loading
 loadpdfs();

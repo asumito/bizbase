@@ -1,6 +1,7 @@
 {
+  "name": "pdf-library",
+  "version": "1.0.0",
   "scripts": {
     "build": "node generate-manifest.js"
-  },
-  "devDependencies": {}
+  }
 }
