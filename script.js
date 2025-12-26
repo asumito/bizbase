@@ -1,4 +1,4 @@
-// script.js
+// script.js - tried fixing the _ space issue.
 const pdfList = document.getElementById('pdf-list');
 const searchInput = document.getElementById('search');
 
@@ -12,7 +12,7 @@ async function loadpdfs() {
     files.forEach(file => {
       const filename = file.split('/').pop();
       const subjectPart = filename.split('_')[0];
-      const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1); // e.g. AGRI → Agri
+      const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1).toLowerCase();
 
       if (!groups[subject]) groups[subject] = [];
       groups[subject].push(file);
@@ -26,10 +26,13 @@ async function loadpdfs() {
       const filteredGroups = {};
 
       files.forEach(file => {
-        if (file.toLowerCase().includes(term)) {
-          const filename = file.split('/').pop();
+        // FIXED: Normalize filename by replacing _ with space for search
+        const filename = file.split('/').pop();
+        const normalizedFile = filename.toLowerCase().replace(/_/g, ' ');
+        
+        if (normalizedFile.includes(term)) {
           const subjectPart = filename.split('_')[0];
-          const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1);
+          const subject = subjectPart.charAt(0).toUpperCase() + subjectPart.slice(1).toLowerCase();
 
           if (!filteredGroups[subject]) filteredGroups[subject] = [];
           filteredGroups[subject].push(file);
