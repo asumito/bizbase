@@ -2,66 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Favicon -->
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BizBase</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 40px auto;
-      padding: 0 20px;
+      margin: 0;
+      padding: 0;
       background: #1e1e1e;
       color: #e0e0e0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-    .container {
+
+    /* Navigation Bar */
+    .nav-bar {
+      background: #151515;
+      padding: 12px 30px;
+      border-bottom: 1px solid #333;
       display: flex;
+      justify-content: flex-start;
+      align-items: center;
       gap: 30px;
       flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 0 auto;
     }
-    .left-column {
-      flex: 3;
-      min-width: 300px;
+    .nav-btn {
+      background: #2d2d2d;
+      color: #a5b4fc;
+      border: 1px solid #444;
+      padding: 8px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
     }
-    .right-column {
+    .nav-btn:hover {
+      background: #3a3a3a;
+      transform: translateY(-1px);
+    }
+    .nav-btn.active {
+      background: #a5b4fc;
+      color: #1e1e1e;
+      border-color: #a5b4fc;
+    }
+
+    .content {
       flex: 1;
-      min-width: 280px;
-      align-self: flex-start;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
     h1 {
-      text-align: left;
+      margin: 0 0 10px 0;
+      font-size: 2.8rem;
       color: #ffffff;
-      margin-bottom: 8px;
-      font-size: 2.5rem;
     }
 
-    /* Quote styles */
-    .quote-container {
-      text-align: left;
-      margin-bottom: 30px;
-      height: 50px; /* Fixed height for smooth transitions */
-    }
     .quote {
-      font-size: 1.6rem; /* ~2/3 of h1 (2.5rem × 0.66 ≈ 1.65rem) */
+      font-size: 1.6rem;
       color: #a5b4fc;
       font-style: italic;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      position: absolute;
-    }
-    .quote.active {
-      opacity: 1;
+      margin-bottom: 30px;
     }
 
     input[type="text"] {
       width: 100%;
+      max-width: 600px;
       padding: 12px;
       font-size: 1.1rem;
       margin: 20px 0;
@@ -69,34 +84,33 @@
       background: #2d2d2d;
       color: #e0e0e0;
       border-radius: 8px;
-      box-sizing: border-box;
     }
-    input[type="text"]::placeholder { color: #888; }
 
-    ul { list-style: none; padding: 0; margin: 0; }
-    li.subject-group { margin: 30px 0; }
-    li.subject-group h3 {
-      margin: 0 0 12px 0;
+    .subject-group h3 {
       color: #a5b4fc;
-      font-size: 1.4rem;
-      padding-bottom: 8px;
+      font-size: 1.5rem;
+      margin: 30px 0 12px;
       border-bottom: 1px solid #444;
+      padding-bottom: 8px;
     }
-    li.subject-group ul li {
-      margin: 8px 0;
+
+    ul { list-style: none; padding: 0; }
+    li {
+      margin: 10px 0;
       padding: 12px 16px;
       background: #252525;
       border-radius: 8px;
-      transition: all 0.2s;
     }
-    li.subject-group ul li:hover {
-      transform: translateX(6px);
-      background: #2d2d2d;
-    }
-    a { text-decoration: none; color: #58a6ff; font-weight: 500; }
+    a { color: #58a6ff; text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .no-results { color: #888; margin: 40px 0; }
 
+    /* Announcement now at bottom-left */
+    .announcement-wrapper {
+      margin-top: auto;           /* pushes to bottom */
+      margin-bottom: 40px;
+      text-align: left;
+      max-width: 500px;
+    }
     .announcement {
       background: #2d2d2d;
       border: 1px solid #444;
@@ -107,63 +121,42 @@
       color: #cdd6f4;
       white-space: pre-wrap;
     }
-    .announcement:empty::before {
-      content: "No announcement yet.";
-      color: #666;
-      font-style: italic;
-    }
-
-    footer {
-      margin-top: 60px;
-      padding: 20px 0;
-      text-align: center;
-      color: #999;
-      font-size: 0.9rem;
-      border-top: 1px solid #333;
-    }
-    footer a { color: #e1306c; font-weight: 600; }
-
-    @media (max-width: 768px) {
-      .container { flex-direction: column; }
-      .right-column { order: -1; margin-bottom: 30px; }
-      h1 { font-size: 2.2rem; }
-      .quote { font-size: 1.4rem; }
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="left-column">
+
+  <!-- Navigation in the marked area -->
+  <nav class="nav-bar">
+    <a href="/" class="nav-btn active">Home</a>
+    <a href="/about.html" class="nav-btn">About</a>
+    <a href="/info.html" class="nav-btn">Info</a>
+    <a href="https://google.com" class="nav-btn">Premium</a>
+
+  </nav>
+
+  <div class="content">
+    <div>
       <h1>BizBase</h1>
-      
-      <!-- Rotating Quotes -->
-      <div class="quote-container">
-        <div class="quote active">"Knowledge is power."</div>
-        <div class="quote">"Study hard, dream big."</div>
-        <div class="quote">"The mind is everything."</div>
-        <div class="quote">"Learn, grow, succeed."</div>
-        <div class="quote">"Books are a student's best friend."</div>
-        <div class="quote">"Education is the key to the future."</div>
-      </div>
+      <div class="quote">"Education is the key to the future."</div>
 
       <input type="text" id="search" placeholder="Search PDFs..." autofocus />
-      <ul id="pdf-list"><!-- PDFs will appear here --></ul>
+
+      <ul id="pdf-list">
+        <!-- Your PDF list will be injected here by script.js -->
+      </ul>
     </div>
 
-    <div class="right-column">
-      <div class="announcement" id="announcement">Loading...</div>
+    <!-- Announcement moved to bottom-left -->
+    <div class="announcement-wrapper">
+      <div class="announcement" id="announcement">
+        Loading announcement...
+      </div>
     </div>
   </div>
 
-  <footer>
-    If you are willing to submit notes, please DM
-    <a href="https://instagram.com/madokashokti" target="_blank" rel="noopener">asmit</a>
-    on Instagram.
-  </footer>
-
   <script src="script.js"></script>
   <script>
-    // Announcement loader
+    // Load announcement
     fetch('/announcement.txt')
       .then(r => r.ok ? r.text() : Promise.reject())
       .then(text => {
@@ -172,16 +165,6 @@
       .catch(() => {
         document.getElementById('announcement').textContent = 'Failed to load announcement.';
       });
-
-    // Quote rotation
-    const quotes = document.querySelectorAll('.quote');
-    let current = 0;
-
-    setInterval(() => {
-      quotes[current].classList.remove('active');
-      current = (current + 1) % quotes.length;
-      quotes[current].classList.add('active');
-    }, 3000);
   </script>
 </body>
 </html>

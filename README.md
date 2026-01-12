@@ -3,7 +3,7 @@ a simple site hosted on netlify that serves educational material
 
 ## Contributions [Patches]
 
-04.12.2025 - Initial design process and planning. Wasn't successful and that's it.
+04.12.2025 		- Initial design process and planning. Wasn't successful and that's it.
 
 05.12.2025/1    - successful implementation of planing.
 05.12.2025/2    - Dark Theme and a few notes.
@@ -18,6 +18,7 @@ a simple site hosted on netlify that serves educational material
 23.12.2025/2    - fixed search not registering 'spaces' // added 'Accounting_Theory'
 26.12.2025/3    - added 'Accounting_Hard_Transactions' // Statistics Chapter 1,9 of 2P and Chapter 1 of 1P // Added a favicon to make tab pretty.
  
+04/12/2025      - Added 'about' and 'info' section // Moved 'announcement box' to the middle-right.
 
 Signing of, asumito. (Maintainer)
 

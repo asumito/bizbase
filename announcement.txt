@@ -1,2 +1,2 @@
-Welcome to BizBase, a hobbyist project focusing to store notes online.
-[Development is slow because there is only one maintainer]
+Welcome to BizBase, a hobbyist project focusing to digitize notes.
+[Being a hobby project, development is slow.]
