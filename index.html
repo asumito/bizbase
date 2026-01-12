@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BizBase</title>
   
-  <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   
   <style>
@@ -51,14 +50,26 @@
       border-color: #a5b4fc;
     }
 
-    .content {
-      flex: 1;
-      max-width: 1200px;
+    /* Main Layout Container */
+    .main-container {
+      display: flex;
+      max-width: 1400px;
       margin: 40px auto;
       padding: 0 30px;
-      display: flex;
-      flex-direction: column;
       gap: 40px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Left Side: PDF Listing */
+    .pdf-section {
+      flex: 3; /* Takes up 3/4 of the space */
+    }
+
+    /* Right Side: Sidebar */
+    .sidebar {
+      flex: 1; /* Takes up 1/4 of the space */
+      min-width: 300px;
     }
 
     h1 {
@@ -74,16 +85,43 @@
       margin-bottom: 30px;
     }
 
+    /* Search & Premium Row */
+    .action-bar {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
     input[type="text"] {
-      width: 100%;
+      flex: 1;
       max-width: 600px;
       padding: 12px;
       font-size: 1.1rem;
-      margin: 20px 0;
       border: 1px solid #444;
       background: #2d2d2d;
       color: #e0e0e0;
       border-radius: 8px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #a5b4fc;
+    }
+
+    .btn-premium {
+      padding: 12px 20px;
+      background: #2d2d2d;
+      color: #a5b4fc;
+      border: 1px solid #a5b4fc;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .btn-premium:hover {
+      background: #a5b4fc;
+      color: #1e1e1e;
     }
 
     .subject-group h3 {
@@ -104,13 +142,7 @@
     a { color: #58a6ff; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* Announcement now at bottom-left */
-    .announcement-wrapper {
-      margin-top: auto;           /* pushes to bottom */
-      margin-bottom: 40px;
-      text-align: left;
-      max-width: 500px;
-    }
+    /* Announcement Box Style */
     .announcement {
       background: #2d2d2d;
       border: 1px solid #444;
@@ -120,34 +152,39 @@
       line-height: 1.6;
       color: #cdd6f4;
       white-space: pre-wrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 900px) {
+      .main-container { flex-direction: column; }
+      .sidebar { order: -1; } /* Puts announcement on top for mobile */
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation in the marked area -->
   <nav class="nav-bar">
     <a href="/" class="nav-btn active">Home</a>
     <a href="/about.html" class="nav-btn">About</a>
     <a href="/info.html" class="nav-btn">Info</a>
-    <a href="https://google.com" class="nav-btn">Premium</a>
-
+    <a href="https://youtube.com" class="nav-btn">Premium</a>
   </nav>
 
-  <div class="content">
-    <div>
+  <div class="main-container">
+    <div class="pdf-section">
       <h1>BizBase</h1>
-      <div class="quote">"Education is the key to the future."</div>
+      <div class="quote" id="daily-quote">"Education is the key to the future."</div>
 
-      <input type="text" id="search" placeholder="Search PDFs..." autofocus />
+      <div class="action-bar">
+        <input type="text" id="search" placeholder="Search PDFs..." autofocus />
+        <a href="https://google.com" class="btn-premium">Premium</a>
+      </div>
 
-      <ul id="pdf-list">
-        <!-- Your PDF list will be injected here by script.js -->
-      </ul>
+      <div id="pdf-list">
+        </div>
     </div>
 
-    <!-- Announcement moved to bottom-left -->
-    <div class="announcement-wrapper">
+    <div class="sidebar">
       <div class="announcement" id="announcement">
         Loading announcement...
       </div>
@@ -165,6 +202,16 @@
       .catch(() => {
         document.getElementById('announcement').textContent = 'Failed to load announcement.';
       });
+
+    // Integrated Quote Logic (keeps your work/rest balance in mind)
+    const quotes = [
+      "“Education is the key to the future.”",
+      "“Rest when you're weary. Refresh and renew yourself.”",
+      "“The expert in anything was once a beginner.”",
+      "“Sometimes the most productive thing you can do is relax.”"
+    ];
+    const dateStamp = new Date().getDate();
+    document.getElementById('daily-quote').textContent = quotes[dateStamp % quotes.length];
   </script>
 </body>
 </html>
