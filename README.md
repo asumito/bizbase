@@ -1,4 +1,4 @@
-### bizbase
+### BizBase
 a simple site hosted on netlify that serves educational material
 
 ## Contributions [Patches]
@@ -19,6 +19,9 @@ a simple site hosted on netlify that serves educational material
 26.12.2025/3    - added 'Accounting_Hard_Transactions' // Statistics Chapter 1,9 of 2P and Chapter 1 of 1P // Added a favicon to make tab pretty.
  
 04/12/2025      - Added 'about' and 'info' section // Moved 'announcement box' to the middle-right.
+
+21/01/2025/1    - Cleared 'Credits' file from pdf sections and moved it to info channel.
+21/01/2025/1    - Removed the 'premium' button from 'search-bar'    
 
 Signing of, asumito. (Maintainer)
 
