@@ -8,11 +8,8 @@ function showRandomSticker() {
   if (!container) return;
 
   const stickers = [
-    "https://openmoji.org/data/color/svg/1F4DA.svg", // Books
-    "https://openmoji.org/data/color/svg/1F4A1.svg", // Idea
-    "https://openmoji.org/data/color/svg/1F393.svg", // Cap
-    "https://openmoji.org/data/color/svg/1F4DD.svg", // Memo
-    "https://openmoji.org/data/color/svg/270F.svg", // Pencil
+    "assets/stickers/heart.png", // Heart
+    "assets/stickers/star.png", // Star
   ];
 
   const randomImg = stickers[Math.floor(Math.random() * stickers.length)];
