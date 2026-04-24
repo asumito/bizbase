@@ -63,15 +63,44 @@
                 box-sizing: border-box;
             }
 
-            /* Left Side: PDF Listing */
             .pdf-section {
                 flex: 3;
             }
 
-            /* Right Side: Sidebar */
             .sidebar {
                 flex: 1;
                 min-width: 300px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Sticker Animation & Container */
+            #sticker-container {
+                margin-bottom: -10px;
+                min-height: 110px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #sticker-container img {
+                max-width: 100px;
+                height: auto;
+                filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+                animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                transform: rotate(5deg);
+            }
+
+            @keyframes popIn {
+                0% {
+                    transform: scale(0) rotate(-15deg);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1) rotate(5deg);
+                    opacity: 1;
+                }
             }
 
             h1 {
@@ -111,12 +140,10 @@
                 border-color: #a5b4fc;
             }
 
-            /* --- PDF LIST & BUTTON STYLING --- */
-
+            /* PDF Category & Grid Styles */
             .category-group {
                 margin-bottom: 35px;
             }
-
             .category-title {
                 font-size: 1.4rem;
                 font-weight: 600;
@@ -126,7 +153,6 @@
                 align-items: center;
                 gap: 10px;
             }
-
             .category-title::before {
                 content: "";
                 width: 4px;
@@ -134,13 +160,11 @@
                 background: #a5b4fc;
                 border-radius: 2px;
             }
-
             .pdf-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
                 gap: 12px;
             }
-
             .pdf-item {
                 display: flex;
                 align-items: center;
@@ -154,7 +178,6 @@
                 font-size: 0.95rem;
                 font-weight: 500;
             }
-
             .pdf-item:hover {
                 background: #313131;
                 border-color: #a5b4fc;
@@ -162,16 +185,12 @@
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             }
-
             .pdf-icon {
                 margin-right: 12px;
                 font-size: 1.2rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
 
-            /* Announcement Box Style */
+            /* Announcement Box */
             .announcement {
                 background: #2d2d2d;
                 border: 1px solid #444;
@@ -182,6 +201,8 @@
                 color: #cdd6f4;
                 white-space: pre-wrap;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                box-sizing: border-box;
             }
 
             @media (max-width: 900px) {
@@ -190,6 +211,7 @@
                 }
                 .sidebar {
                     order: -1;
+                    margin-bottom: 20px;
                 }
                 .pdf-grid {
                     grid-template-columns: 1fr;
@@ -225,6 +247,8 @@
             </div>
 
             <div class="sidebar">
+                <div id="sticker-container"></div>
+
                 <div class="announcement" id="announcement">
                     Loading announcement...
                 </div>
@@ -233,7 +257,7 @@
 
         <script src="script.js"></script>
         <script>
-            // Load announcement
+            // Announcement Logic
             fetch("/announcement.txt")
                 .then((r) => (r.ok ? r.text() : Promise.reject()))
                 .then((text) => {

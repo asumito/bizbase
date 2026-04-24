@@ -23,5 +23,7 @@ a simple site hosted on netlify that serves educational material
 21/01/2025/1    - Cleared 'Credits' file from pdf sections and moved it to info channel.
 21/01/2025/1    - Removed the 'premium' button from 'search-bar'    
 
-Signing of, asumito. (Maintainer)
+23/04/2026      - Added more notes of BOM and FBI. cute stickers uwu
+Signing off, asumito. (Maintainer)
+
 

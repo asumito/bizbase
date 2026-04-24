@@ -1,7 +1,31 @@
-// script.js - Updated for modern button styling
+// script.js
 const pdfList = document.getElementById("pdf-list");
 const searchInput = document.getElementById("search");
 
+// --- Sticker Logic ---
+function showRandomSticker() {
+  const container = document.getElementById("sticker-container");
+  if (!container) return;
+
+  const stickers = [
+    "https://openmoji.org/data/color/svg/1F4DA.svg", // Books
+    "https://openmoji.org/data/color/svg/1F4A1.svg", // Idea
+    "https://openmoji.org/data/color/svg/1F393.svg", // Cap
+    "https://openmoji.org/data/color/svg/1F4DD.svg", // Memo
+    "https://openmoji.org/data/color/svg/270F.svg", // Pencil
+  ];
+
+  const randomImg = stickers[Math.floor(Math.random() * stickers.length)];
+  const imgEl = document.createElement("img");
+  imgEl.src = randomImg;
+  imgEl.alt = "Study Sticker";
+
+  // Clear container first in case of re-renders
+  container.innerHTML = "";
+  container.appendChild(imgEl);
+}
+
+// --- PDF Loading Logic ---
 async function loadpdfs() {
   try {
     const response = await fetch("/assets/manifest.json");
@@ -12,7 +36,6 @@ async function loadpdfs() {
     files.forEach((file) => {
       const filename = file.split("/").pop();
       const subjectPart = filename.split("_")[0];
-      // Formatting Subject Title (e.g., "accounting" -> "Accounting")
       const subject =
         subjectPart.charAt(0).toUpperCase() +
         subjectPart.slice(1).toLowerCase();
@@ -51,8 +74,7 @@ async function loadpdfs() {
       rendergroups(sorted, filteredGroups);
     });
   } catch (err) {
-    pdfList.innerHTML =
-      '<div class="no-results">Error loading PDFs. Please try again later.</div>';
+    pdfList.innerHTML = '<div class="no-results">Error loading PDFs.</div>';
     console.error(err);
   }
 }
@@ -64,13 +86,11 @@ function rendergroups(subjects, groups) {
     return;
   }
 
-  // Map through subjects and create the grid structure
   pdfList.innerHTML = subjects
     .map((subject) => {
       const items = groups[subject]
         .map((file) => {
           const filename = file.split("/").pop();
-          // Clean up filename: remove .pdf, replace underscores with spaces, capitalize
           const cleanName = filename
             .replace(/.pdf$/i, "")
             .replace(/_/g, " ")
@@ -95,4 +115,6 @@ function rendergroups(subjects, groups) {
     .join("");
 }
 
+// Run functions
 loadpdfs();
+showRandomSticker();
