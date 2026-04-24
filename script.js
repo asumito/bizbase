@@ -9,7 +9,9 @@ function showRandomSticker() {
 
   const stickers = [
     "assets/stickers/heart.png", // Heart
-    "assets/stickers/star.png", // Star
+    "assets/stickers/star.png",
+    "assets/stickers/moon.webp",
+    "assets/stickers/cat_glasses.webp", // Star
   ];
 
   const randomImg = stickers[Math.floor(Math.random() * stickers.length)];
