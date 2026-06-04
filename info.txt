@@ -1,4 +1,0 @@
-run "npm run build" after new notes have been added.
-Notes provided by Aniket, Nabil, Nazia and Arman.
-Aniket: deyaniket112@gmail.com
-Arman: armankim12@gmail.com
